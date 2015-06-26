@@ -11,7 +11,7 @@ gse_ids = names(gse_count[gse_count >= 5])
 gs_lst = readRDS("/net/hsphfs1/srv/export/hsphfs1/share_root/hide_lab/PCxN/data/gobp_gs.RDS")
 n_pairs = choose(length(gs_lst),2)
 
-
+# helper function to extract the number of samples in each GSE series
 GetN = function(ic){
   gse=gse_ids[ic]
   gse_lst = readRDS(paste0("/net/hsphfs1/srv/export/hsphfs1/share_root/hide_lab/PCxN/output/GOBP/",gse,"_gobp_pathcor.RDS"))
@@ -21,7 +21,7 @@ GetN = function(ic){
 
 library(parallel)
 nc = detectCores()
-
+# get number of samples per experiment
 pb = txtProgressBar(min=0,max=length(gse_ids),style=3,initial=0)
 cat("\n")
 n_vec = mclapply(1:length(gse_ids),GetN,mc.cores=nc)
@@ -30,7 +30,7 @@ close(pb)
 
 saveRDS(n_vec,"/net/hsphfs1/srv/export/hsphfs1/share_root/hide_lab/PCxN/output/GOBP/res/n_vec.RDS")
 
-# get overlap coefficient
+# get overlap coefficient between pathway pairs
 gse_lst = readRDS(paste0("/net/hsphfs1/srv/export/hsphfs1/share_root/hide_lab/PCxN/output/GOBP/",gse_ids[1],"_gobp_pathcor.RDS"))
 over_coef = mclapply(gse_lst,function(x){
   if(length(x) == 7){
