@@ -1,5 +1,5 @@
 library(GSEABase)
-
+options(stringsAsFactors = F)
 # ==== GO: BP ====
 # annotation (entrez gene ids) for BP: GO biological process gene sets from  MSigDB v5.0
 gobp_gsc = getGmt("data/Gene Sets/c5.bp.v5.0.entrez.gmt",
