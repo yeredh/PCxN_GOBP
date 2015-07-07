@@ -10,6 +10,13 @@ go_gsc = getGmt("data/Gene Sets/c5.all.v5.0.entrez.gmt",
 go_gs_lst = lapply(go_gsc, geneIds)
 names(go_gs_lst) = names(go_gsc)
 
+# keep gene ids represented in platform
+GPL570_ids=readRDS("data/GPL570_ids.RDS")
+res = lapply(go_gs_lst,function(x){ind = x %in% GPL570_ids;return(x[ind]);})
+res = res[sapply(res, length) > 0]
+saveRDS(res,"data/Gene Sets/go_gs.RDS")
+
+
 # ==== GO: BP ====
 # annotation (entrez gene ids) for BP: GO biological process gene sets from  MSigDB v5.0
 gobp_gsc = getGmt("data/Gene Sets/c5.bp.v5.0.entrez.gmt",
